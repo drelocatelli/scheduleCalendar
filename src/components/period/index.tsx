@@ -16,18 +16,18 @@ function WeekEl({ id, value }: { id: number; value: string }) {
     return (
         <div className="data-week" data-week={id}>
             <div className="week">{value}</div>
-            <HourEl />
+            <HourEl week={value} />
         </div>
     );
 }
 
-function HourEl() {
+function HourEl({week}: {week: string}) {
     return (
         <div className="hours">
             {[...Array(24)].map((e, i) =>
                 i >= 5 ? (
                     <div className="hour">
-                        <div>
+                        <div title={`${i+1} ${i + 1 >= 12 ? 'PM' : 'AM'}, ${week}`}>
                             {i + 1}
                             <span style={{ fontSize: '12px' }}>{i + 1 >= 12 ? 'PM' : 'AM'}</span>
                         </div>
@@ -40,11 +40,11 @@ function HourEl() {
 }
 
 function MinuteEl() {
-    const minutePercent = ['start', 'middle-start', 'middle', 'middle-end', 'end'];
+    const minutePosition = ['start', 'middle-start', 'middle', 'middle-end', 'end'];
 
     return (
         <div className="minutes">
-            {minutePercent.map((e, i) => ( <div className="minute">&nbsp;</div> ))}
+            {minutePosition.map((e, i) => ( <div className="minute" title={e}>&nbsp;</div> ))}
         </div>
     );
 }
