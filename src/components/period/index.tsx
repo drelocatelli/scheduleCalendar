@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import '../period/index.css';
 
 export default function Period() {
@@ -14,20 +15,36 @@ export default function Period() {
 
 function WeekEl({ id, value }: { id: number; value: string }) {
 
-    const hoverEffect = (e: React.MouseEvent, active: boolean = true) => {
+    const dataWeekRef = useRef(null);
+
+    const hoverEffect = (e: React.MouseEvent) => {
         const target = e.target as HTMLElement;
-        
-        if(target.parentElement) {
-            const computedStyle = window.getComputedStyle(target.parentElement).getPropertyValue('background');
-            console.log(computedStyle)
-            if(active) return target.parentElement.style.setProperty('background','#f5f5f5');
-            target.parentElement.style.setProperty('background', '#fff');
+
+        const backgroundProperty = (element: HTMLElement) => element.style.setProperty('background','#f5f5f5');
+
+        if(target.parentElement && target.nextElementSibling) {
+            const nextElement = target.nextElementSibling as HTMLElement;
+
+            backgroundProperty(target.parentElement);
+            backgroundProperty(nextElement);
+        }
+    }
+
+    const disableHoverEffect = () => {
+        if(dataWeekRef.current) {
+            const element = dataWeekRef.current as HTMLElement;
+            const childElement = element.querySelector('.hours') as HTMLElement;
+
+            const resetBackgroundProperty = (element: HTMLElement) => element.style.setProperty('background','#fff');
+
+            resetBackgroundProperty(element);
+            resetBackgroundProperty(childElement);
         }
     }
 
     return (
-        <div className="data-week" data-week={id}>
-            <div className="week" onMouseMove={hoverEffect} onMouseLeave={(e) => hoverEffect(e, false)}>{value}</div>
+        <div className="data-week" ref={dataWeekRef} data-week={id} onMouseLeave={disableHoverEffect}>
+            <div className="week" onMouseMove={hoverEffect}>{value}</div>
             <HourEl week={value} />
         </div>
     );
