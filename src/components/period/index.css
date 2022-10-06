@@ -19,12 +19,13 @@
     text-align: center;
     padding: 1rem 0;
     padding-bottom: 1.5rem; 
-    font-size: 24px;
+    font-size: 1.3vw;
+    transition: font-size .2s;
     align-self: center;
 }
 
 .data-week .hours {
-    font-size: 18px;
+    font-size: 1vw;
     display: grid;
     grid-auto-rows: 180px;
 }
@@ -38,6 +39,12 @@
     transition: background-color .2s;
     cursor: pointer;
     overflow: hidden;
+    transition: font-size .4s;
+}
+
+.data-week .hours .hour .hour-period {
+    transition: font-size .4s;
+    font-size: .7vw;
 }
 
 .data-week .hours .hour:hover {
@@ -54,4 +61,35 @@
 }
 
 .data-week .hours .minute {
+}
+
+@media only screen and (max-width: 900px) {
+    .data-week .week {
+        font-size: 15px!important;
+    }
+
+    .data-week .hours .hour {
+        font-size: 16px!important;
+    }
+    .data-week .hours .hour .hour-period {
+        font-size: 12px!important;
+    }
+}
+
+@media only screen and (max-width: 1399px) {
+    .data-week .week {
+        font-size: 20px;
+    }
+    .data-week .hours .hour {
+        font-size: 18px;
+    }
+    .data-week .hours .hour .hour-period {
+        font-size: 11px;
+    }
+}
+
+@media only screen and (min-width: 1400px) {
+    .data-week .week {
+        font-size: 20px;
+    }
 }

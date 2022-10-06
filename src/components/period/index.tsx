@@ -71,7 +71,7 @@ function HourEl({week}: {week: string}) {
                     <div className="hour" key={i} onClick={() => toggleModal({hour: i+1, week})}>
                         <div title={`${i+1} ${i + 1 >= 12 ? 'PM' : 'AM'}, ${week}`}>
                             {i + 1}
-                            <span style={{ fontSize: '12px' }}>{i + 1 >= 12 ? 'PM' : 'AM'}</span>
+                            <span className="hour-period">{i + 1 >= 12 ? 'PM' : 'AM'}</span>
                         </div>
                         <MinuteEl />
                     </div>
