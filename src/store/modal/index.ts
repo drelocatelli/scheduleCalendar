@@ -1,21 +1,18 @@
-import { atom, selector } from "recoil";
+import { atom, selector, useRecoilState } from "recoil";
 
 interface ModalProps {
     isShowing: boolean;
+    title?: string;
     content?: React.ReactNode
 }
 
-const modalStore = atom({
+const modalStore = atom<ModalProps>({
     key: "modalStore",
     default: {
         isShowing: false,
-        content: null
-    } as ModalProps,
+        title: undefined,
+        content: undefined
+    }
 });
 
-const toggleModal = selector({
-    key: 'toggleModal',
-    get: ({get}) => get(modalStore),
-});
-
-export {modalStore, toggleModal};
+export {modalStore};

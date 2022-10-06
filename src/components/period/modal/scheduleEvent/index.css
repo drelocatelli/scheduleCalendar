@@ -1,0 +1,19 @@
+.schedule-event {
+    padding: 2rem 4rem;
+}
+
+.schedule-event input {
+    width: max-content;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    background: transparent;
+    transition: border-bottom .2s;
+    padding: 6px 0;
+    font-size: 20px;
+    width: -webkit-fill-available;
+}
+
+.schedule-event input:focus {
+    border-bottom: 1px solid rgb(13, 119, 206);
+}
