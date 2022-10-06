@@ -1,5 +1,15 @@
 .schedule-event {
-    padding: 2rem 4rem;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.schedule-event .spacing {
+    margin:0 4rem;
+}
+
+.schedule-event .basic-spacing {
+    margin: 2rem 1.5rem;
 }
 
 .schedule-event input {
@@ -16,4 +26,13 @@
 
 .schedule-event input:focus {
     border-bottom: 1px solid rgb(13, 119, 206);
+}
+
+.schedule-event .time-schedule {
+    display: flex;
+    flex-direction: row;
+}
+
+.schedule-event .icon {
+    margin-right: 24px;
 }
