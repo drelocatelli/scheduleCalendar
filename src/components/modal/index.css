@@ -17,6 +17,10 @@
     box-shadow: 1px 1px 35px #00000082;
 }
 
+.modal-content {
+    overflow-y: auto;
+}
+
 .modal h1.title {
     font-weight: normal;
     margin:0;

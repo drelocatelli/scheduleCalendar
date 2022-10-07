@@ -19,7 +19,9 @@ export default function Modal() {
                     </button>
                 </div>
                 <h1 className="title">{modal.title}</h1>
-                {modal.content}
+                <div className="modal-content">
+                    {modal.content}
+                </div>
             </div>
         </div>
     );
