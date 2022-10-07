@@ -1,11 +1,30 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
+import { eventStore } from '../../store/event';
 import { modalStore } from '../../store/modal';
 import '../period/index.css';
 import ScheduleEvent from './modal/scheduleEvent';
 
 export default function Period() {
     const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    const [events, setEvents] = useRecoilState(eventStore);
+    
+    const allHourElement = Array.from(document.querySelectorAll('.hours .hour')) as HTMLElement[];
+
+    useEffect(() => {
+        defineEvent();
+    }, [events])
+
+    function defineEvent() {
+        events.forEach(event => {
+            // find the event widget element
+            const eventTime = parseInt(event.time.initTime).toString();
+            const hourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == eventTime));
+
+            console.log(hourElement)
+        });
+    }
 
     return (
         <div className="period">
@@ -68,7 +87,7 @@ function HourEl({week}: {week: string}) {
         <div className="hours" >
             {[...Array(24)].map((_, i) =>
                 i >= 5 ? (
-                    <div className="hour" key={i} onClick={() => toggleModal({hour: i+1, week})}>
+                    <div className="hour" data-week={week.toLowerCase()} data-hour={i+1} key={i} onClick={() => toggleModal({hour: i+1, week})}>
                         <div title={`${i+1} ${i + 1 >= 12 ? 'PM' : 'AM'}, ${week}`}>
                             {i + 1}
                             <span className="hour-period">{i + 1 >= 12 ? 'PM' : 'AM'}</span>

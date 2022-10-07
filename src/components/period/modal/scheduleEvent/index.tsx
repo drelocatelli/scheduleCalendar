@@ -1,7 +1,7 @@
 import './index.css';
 import {FiClock} from 'react-icons/fi';
 import {BsFillCalendarDateFill} from 'react-icons/bs';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { modalStore } from '../../../../store/modal';
 import { eventStore } from '../../../../store/event';
@@ -59,6 +59,7 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
                 time: {
                     initTime: `${fHour}:${fMinute}`,
                     endTime: `${eHour}:${eMinute}`,
+                    week: week.toLowerCase(),
                 },
             }
         ];
@@ -69,10 +70,6 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
         setTimeout(() => setModal({isShowing: false}), 200);
 
     }
-    
-    useEffect(() => {
-        console.log(event)
-    }, [event])
     
     return(
         <div className='schedule-event'>

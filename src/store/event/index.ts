@@ -10,6 +10,7 @@ interface Event {
 interface Time {
     initTime: string;
     endTime: string;
+    week: string;
 }
 
 const eventStore = atom<Event[]>({
