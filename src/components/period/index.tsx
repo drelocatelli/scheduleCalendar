@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { eventStore } from '../../store/event';
 import { modalStore } from '../../store/modal';
-import Card from '../card';
+import {Card} from '../card';
 import '../period/index.css';
 import ScheduleEvent from './modal/scheduleEvent';
 
@@ -22,18 +22,27 @@ export default function Period() {
             // find the event widget element
             const eventTime = parseInt(event.time.initTime).toString();
             const hourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == eventTime));
+            const nextHourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == (parseInt(eventTime) + 1).toString() ));
 
             const initMinute = parseInt(event.time.initTime.slice(3, 5));
-            const eventMinPosition = calcMinPos(initMinute);
-            const minutesPosElements = Array.from(hourElement!.lastChild!.childNodes) as HTMLElement[];
-            const minPosEl = minutesPosElements.find(el => el.dataset.position == eventMinPosition);
+            const endMinute = parseInt(event.time.endTime.slice(3, 5));
+            const eventMinPosition = calcPos(initMinute);
+            const eventMaxPosition = calcPos(endMinute);
 
-            if(minPosEl) {
+            console.log(eventMaxPosition)
+            const minutesInitPosElements = Array.from(hourElement!.lastChild!.childNodes) as HTMLElement[];
+            const minutesEndPosElements = Array.from(nextHourElement!.lastChild!.childNodes) as HTMLElement[];
+
+            const minPosEl = minutesInitPosElements.find(el => el.dataset.position == eventMinPosition);
+            const maxPosEl = minutesEndPosElements.find(el => el.dataset.position == eventMaxPosition);
+
+            if(minPosEl && maxPosEl) {
                 minPosEl.innerHTML = Card(event);
+                maxPosEl.innerHTML = Card(event, true);
             }
         });
         
-        function calcMinPos(min: number) {
+        function calcPos(min: number) {
             return (min <= 11.8) ? 'start' :
                 (min <= 27.6) ? 'middle-start' :
                 (min <= 41.4) ? 'middle' :

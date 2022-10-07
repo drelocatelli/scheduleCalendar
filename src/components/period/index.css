@@ -68,6 +68,11 @@
     font-size: 12px;
 }
 
+.data-week .hours .minute .card.isEnd {
+    background:#ebebeb!important;
+    color: rgb(167, 167, 167);
+}
+
 .data-week .hours .minute .icon {
     position: relative;
     float: right;
