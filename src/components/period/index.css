@@ -60,7 +60,17 @@
     height: -webkit-fill-available;
 }
 
-.data-week .hours .minute {
+.data-week .hours .minute .card {
+    color: #ccc;
+    background: #1F546B;
+    padding:5px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.data-week .hours .minute .icon {
+    position: relative;
+    float: right;
 }
 
 @media only screen and (max-width: 900px) {

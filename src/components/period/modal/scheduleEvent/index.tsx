@@ -36,7 +36,7 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
 
     const handleInput = (e: React.ChangeEvent) => {
         const target = e.target as HTMLInputElement;
-        const value = (parseInt(target.value) <= 9) ? `0${target.value}`: target.value;
+        const value = target.value;
         const name = target.name;
         setInputs(state => ({...state, [name]: value}) );
     }

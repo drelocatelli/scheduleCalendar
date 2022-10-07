@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { eventStore } from '../../store/event';
 import { modalStore } from '../../store/modal';
+import { clockSvg } from '../../utils/svgIcons';
 import '../period/index.css';
 import ScheduleEvent from './modal/scheduleEvent';
 
@@ -22,8 +23,32 @@ export default function Period() {
             const eventTime = parseInt(event.time.initTime).toString();
             const hourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == eventTime));
 
-            console.log(hourElement)
+            const initMinute = parseInt(event.time.initTime.slice(3, 5));
+            const eventMinPosition = calcMinPos(initMinute);
+            const minutesPosElements = Array.from(hourElement!.lastChild!.childNodes) as HTMLElement[];
+            const minPosEl = minutesPosElements.find(el => el.dataset.position == eventMinPosition);
+
+            if(minPosEl) {
+                minPosEl.innerHTML = `
+                    <div class="card">
+                        ${event.title}
+                        ${event.status == 'busy' && (`
+                            <div class="icon" title="busy">
+                                ${clockSvg({size: 14, color: '#fff'})}
+                            </div>
+                        `)}
+                    </div>
+                `;
+            }
         });
+    }
+
+    function calcMinPos(min: number) {
+        return (min <= 11.8) ? 'start' :
+            (min <= 27.6) ? 'middle-start' :
+            (min <= 41.4) ? 'middle' :
+            (min <= 55.2) ? 'middle-end' :
+            'end';
     }
 
     return (
@@ -105,7 +130,7 @@ function MinuteEl() {
 
     return (
         <div className="minutes">
-            {minutePosition.map((e, i) => ( <div className="minute" key={i} title={e}>&nbsp;</div> ))}
+            {minutePosition.map((e, i) => ( <div className="minute" key={i} data-position={e}>&nbsp;</div> ))}
         </div>
     );
 }
