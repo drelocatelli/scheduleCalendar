@@ -1,5 +1,6 @@
 .schedule-event {
     padding: 2rem 0;
+    padding-bottom: 0;
     display: flex;
     flex-direction: column;
 }
@@ -15,9 +16,22 @@
 .schedule-event .time-schedule {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    align-items: center;
 }
 
 .schedule-event .icon {
     margin-right: 24px;
+    color: #575757;
 }
 
+.schedule-event .busy-schedule {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* .schedule-event .controls {
+    float: right;
+    margin: 0 2rem;
+} */

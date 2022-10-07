@@ -13,7 +13,7 @@ body {
     background-color: #f6f6f6;
 }
 
-input {
+input, select {
     border: none;
     border-bottom: 1px solid #ccc;
     outline: none;
@@ -23,6 +23,32 @@ input {
     font-size: 20px;
 }
 
-input:focus {
+button {
+    background: #1d6ddd;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    padding: .5rem 2rem;
+    border-radius: 4px;
+    color: #fff;
+}
+
+button:hover {
+    background: #115cc4;
+
+}
+
+select {
+    cursor: pointer;
+}
+
+input:focus, select:focus {
     border-bottom: 1px solid rgb(13, 119, 206);
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
 }
