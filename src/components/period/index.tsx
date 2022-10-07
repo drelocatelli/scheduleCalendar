@@ -32,11 +32,11 @@ export default function Period() {
                 minPosEl.innerHTML = `
                     <div class="card">
                         ${event.title}
-                        ${event.status == 'busy' && (`
+                        ${event.status == 'busy' ? (`
                             <div class="icon" title="busy">
                                 ${clockSvg({size: 14, color: '#fff'})}
                             </div>
-                        `)}
+                        `): ``}
                     </div>
                 `;
             }
