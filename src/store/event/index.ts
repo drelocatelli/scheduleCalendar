@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface Event {
+export interface Event {
     title: string;
     description?: string;
     status: string;

@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useRecoilState } from 'recoil';
 import { eventStore } from '../../store/event';
 import { modalStore } from '../../store/modal';
-import { clockSvg } from '../../utils/svgIcons';
+import Card from '../card';
 import '../period/index.css';
 import ScheduleEvent from './modal/scheduleEvent';
 
@@ -29,27 +29,19 @@ export default function Period() {
             const minPosEl = minutesPosElements.find(el => el.dataset.position == eventMinPosition);
 
             if(minPosEl) {
-                minPosEl.innerHTML = `
-                    <div class="card">
-                        ${event.title}
-                        ${event.status == 'busy' ? (`
-                            <div class="icon" title="busy">
-                                ${clockSvg({size: 14, color: '#fff'})}
-                            </div>
-                        `): ``}
-                    </div>
-                `;
+                minPosEl.innerHTML = Card(event);
             }
         });
+        
+        function calcMinPos(min: number) {
+            return (min <= 11.8) ? 'start' :
+                (min <= 27.6) ? 'middle-start' :
+                (min <= 41.4) ? 'middle' :
+                (min <= 55.2) ? 'middle-end' :
+                'end';
+        }
     }
 
-    function calcMinPos(min: number) {
-        return (min <= 11.8) ? 'start' :
-            (min <= 27.6) ? 'middle-start' :
-            (min <= 41.4) ? 'middle' :
-            (min <= 55.2) ? 'middle-end' :
-            'end';
-    }
 
     return (
         <div className="period">
