@@ -85,7 +85,7 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
                         <input type="number" name="fMinute" value={inputs.fMinute} onChange={handleInput} onClick={selectTarget} min="0" max="59" style={{fontSize: 'inherit', width: '25px'}} /> 
                         {hour >= 12 ? 'PM' : 'AM'}
                         &nbsp;&nbsp; - &nbsp;&nbsp; 
-                        <input type="number" name="eHour" value={inputs.eHour} onChange={handleInput} onClick={selectTarget} min="0" max="23" style={{fontSize: 'inherit', width: '25px'}} />
+                        <input type="number" name="eHour" value={inputs.eHour} onChange={handleInput} onClick={selectTarget} min="0" max="24" style={{fontSize: 'inherit', width: '25px'}} />
                         :
                         <input type="number" name="eMinute" value={inputs.eMinute} onChange={handleInput} onClick={selectTarget} min="0" max="59" style={{fontSize: 'inherit', width: '25px'}} />
                     </div>

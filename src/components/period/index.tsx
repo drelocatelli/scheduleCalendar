@@ -18,11 +18,12 @@ export default function Period() {
     }, [events])
 
     function defineEvent() {
-        events.forEach(event => {
+        events.forEach((event, i) => {
             // find the event widget element
             const eventTime = parseInt(event.time.initTime).toString();
+            const endEventTime = parseInt(event.time.endTime).toString();
             const hourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == eventTime));
-            const nextHourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == (parseInt(eventTime) + 1).toString() ));
+            const nextHourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == endEventTime ));
 
             const initMinute = parseInt(event.time.initTime.slice(3, 5));
             const endMinute = parseInt(event.time.endTime.slice(3, 5));
@@ -37,8 +38,8 @@ export default function Period() {
             const maxPosEl = minutesEndPosElements.find(el => el.dataset.position == eventMaxPosition);
 
             if(minPosEl && maxPosEl) {
-                minPosEl.innerHTML = Card(event);
-                maxPosEl.innerHTML = Card(event, true);
+                minPosEl.innerHTML = Card(i+1, event);
+                maxPosEl.innerHTML = Card(i+1, event, true);
             }
         });
         

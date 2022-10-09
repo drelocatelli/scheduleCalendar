@@ -1,9 +1,12 @@
 import { Event } from "../../store/event";
 import { clockSvg, flagSvg } from "../../utils/svgIcons";
 
-function Card(event : Event, isEnd: boolean = false) {
+function Card(id: number, event : Event, isEnd: boolean = false) {
     return `
         <div class="card ${isEnd ? 'isEnd' : ''}" title="${event.time.initTime} - ${event.time.endTime}">
+            <span class="event_id">
+                ${id} - 
+            </span>
             ${event.title}
             ${isEnd ? (`
                 <div class="icon" title="end of event">
