@@ -36,13 +36,8 @@ export default function Period() {
             const minutesInitPosElements = Array.from(hourElement!.lastChild!.childNodes) as HTMLElement[];
             const minutesEndPosElements = Array.from(nextHourElement!.lastChild!.childNodes) as HTMLElement[];
 
-            console.log(event.time.endTime)
-            console.log(eventMaxPosition, minutesEndPosElements)
-
             const minPosEl = minutesInitPosElements.find(el => el.dataset.position == eventMinPosition);
             const maxPosEl = minutesEndPosElements.find(el => el.dataset.position == eventMaxPosition);
-
-            console.log(maxPosEl,)
 
             if(minPosEl && maxPosEl) {
                 minPosEl.innerHTML = Card(i+1, event);
