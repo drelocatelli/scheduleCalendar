@@ -25,17 +25,24 @@ export default function Period() {
             const hourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == eventTime));
             const nextHourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == endEventTime ));
 
-            const initMinute = parseInt(event.time.initTime.slice(3, 5));
-            const endMinute = parseInt(event.time.endTime.slice(3, 5));
+
+            const initMinute = parseInt(event.time.initTime.split(':')[1]);
+            const endMinute = parseInt(event.time.endTime.split(':')[1]);
             const eventMinPosition = calcPos(initMinute);
             const eventMaxPosition = calcPos(endMinute);
 
-            console.log(eventMaxPosition)
+            console.log(initMinute, endMinute)
+
             const minutesInitPosElements = Array.from(hourElement!.lastChild!.childNodes) as HTMLElement[];
             const minutesEndPosElements = Array.from(nextHourElement!.lastChild!.childNodes) as HTMLElement[];
 
+            console.log(event.time.endTime)
+            console.log(eventMaxPosition, minutesEndPosElements)
+
             const minPosEl = minutesInitPosElements.find(el => el.dataset.position == eventMinPosition);
             const maxPosEl = minutesEndPosElements.find(el => el.dataset.position == eventMaxPosition);
+
+            console.log(maxPosEl,)
 
             if(minPosEl && maxPosEl) {
                 minPosEl.innerHTML = Card(i+1, event);
