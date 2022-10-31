@@ -1,1 +1,1 @@
-![Screenshot 2022-10-05 181250](https://user-images.githubusercontent.com/32282846/194164777-1e4442a2-49d8-4d57-b174-e7543f21b9ec.png)
+![image](https://user-images.githubusercontent.com/32282846/199114063-473b4c4d-8757-4206-99a8-c3c5b60ce3ee.png)
