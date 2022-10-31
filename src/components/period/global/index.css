@@ -1,0 +1,30 @@
+.global {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left:0;
+    width:100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.global div[data-event] {
+    position: absolute;
+    pointer-events: all;
+    background-color: #000;
+    color:#fff;
+}
+
+.global .card {
+    position: absolute;
+    color:#fff;
+    pointer-events: all;
+    user-select: none;
+}
+
+.global .line {
+    height: 0;
+    width: 100%;
+    position: absolute;
+    border-bottom: 1px dotted #e7e7e7;
+}

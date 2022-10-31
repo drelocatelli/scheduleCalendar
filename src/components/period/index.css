@@ -30,6 +30,10 @@
     grid-auto-rows: 180px;
 }
 
+.data-week .hour-title {
+    z-index:1;
+}
+
 .data-week .hours .hour {
     display: flex;
     flex-direction: column;
@@ -60,12 +64,18 @@
     height: -webkit-fill-available;
 }
 
-.data-week .hours .minute .card {
-    color: #ccc;
-    background: #1F546B;
-    padding:5px 8px;
+.card {
+    padding: 8px .8rem;
+    min-height: 30px;
     border-radius: 3px;
-    font-size: 12px;
+    font-size: 13px;
+    cursor:pointer;
+    box-sizing: border-box;
+    transition: opacity .2s;
+}
+
+.card:hover {
+    opacity: .7;
 }
 
 .data-week .hours .minute .card.isEnd {

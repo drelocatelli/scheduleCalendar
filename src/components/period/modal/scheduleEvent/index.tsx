@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { modalStore } from '../../../../store/modal';
 import { eventStore } from '../../../../store/event';
+import { EventService } from '../../../../service/event';
 
 interface InputProps {
     title: string;
@@ -18,7 +19,6 @@ interface InputProps {
 export default function ScheduleEvent(props: {week: string, hour: number}) {
     const {hour, week} = props;
 
-    const date = new Date();
     const hourWithZero = (num: number) => (num <= 9) ? `0${num}` : num;
 
     const initialState : InputProps = {
@@ -48,6 +48,9 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const colors = ['#009688', '#8BC34A', '#00BCD4', '#E91E63', '#FF5722', '#673AB7'];
+        const chooseColor = Math.floor(Math.random() * ((colors.length - 1) - 0) + 0);
         
         const {title, fHour, eHour, eMinute, fMinute, status} = inputs;
 
@@ -56,6 +59,7 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
             {
                 title, 
                 status,
+                color: colors[chooseColor],
                 time: {
                     initTime: `${fHour}:${fMinute}`,
                     endTime: `${eHour}:${eMinute}`,
@@ -65,6 +69,8 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
         ];
 
         setEvent(newEvent);
+        // todo save
+        // EventService.save(newEvent);
 
         // close modal
         setTimeout(() => setModal({isShowing: false}), 200);

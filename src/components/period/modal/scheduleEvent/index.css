@@ -1,7 +1,7 @@
 .schedule-event {
     padding: 2rem 0;
     padding-bottom: 0;
-    display: flex;
+    z-index: 2;
     flex-direction: column;
 }
 

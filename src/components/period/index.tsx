@@ -1,62 +1,28 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { eventStore } from '../../store/event';
 import { modalStore } from '../../store/modal';
-import {Card} from '../card';
 import '../period/index.css';
+import { Global } from './global';
 import ScheduleEvent from './modal/scheduleEvent';
 
 export default function Period() {
     const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-    const [events, setEvents] = useRecoilState(eventStore);
     
-    const allHourElement = Array.from(document.querySelectorAll('.hours .hour')) as HTMLElement[];
-
+    const [mount, setMount] = useState(false);
+    
     useEffect(() => {
-        defineEvent();
-    }, [events])
+        setMount(true);
+    }, []);
 
-    function defineEvent() {
-        events.forEach((event, i) => {
-            // find the event widget element
-            const eventTime = parseInt(event.time.initTime).toString();
-            const endEventTime = parseInt(event.time.endTime).toString();
-            const hourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == eventTime));
-            const nextHourElement = allHourElement.find(el => (el.dataset.week == event.time.week && el.dataset.hour == endEventTime ));
-
-
-            const initMinute = parseInt(event.time.initTime.split(':')[1]);
-            const endMinute = parseInt(event.time.endTime.split(':')[1]);
-            const eventMinPosition = calcPos(initMinute);
-            const eventMaxPosition = calcPos(endMinute);
-
-            console.log(initMinute, endMinute)
-
-            const minutesInitPosElements = Array.from(hourElement!.lastChild!.childNodes) as HTMLElement[];
-            const minutesEndPosElements = Array.from(nextHourElement!.lastChild!.childNodes) as HTMLElement[];
-
-            const minPosEl = minutesInitPosElements.find(el => el.dataset.position == eventMinPosition);
-            const maxPosEl = minutesEndPosElements.find(el => el.dataset.position == eventMaxPosition);
-
-            if(minPosEl && maxPosEl) {
-                minPosEl.innerHTML = Card(i+1, event);
-                maxPosEl.innerHTML = Card(i+1, event, true);
-            }
-        });
-        
-        function calcPos(min: number) {
-            return (min <= 11.8) ? 'start' :
-                (min <= 27.6) ? 'middle-start' :
-                (min <= 41.4) ? 'middle' :
-                (min <= 55.2) ? 'middle-end' :
-                'end';
-        }
+    if(!mount) {
+        return(
+            <>Loading...</>
+        );
     }
-
-
+    
     return (
         <div className="period">
+            <Global />
             {week.map((dayofWeek, i) => (
                 <WeekEl key={i} id={i} value={dayofWeek} />
             ))}
@@ -117,7 +83,7 @@ function HourEl({week}: {week: string}) {
             {[...Array(24)].map((_, i) =>
                 i >= 5 ? (
                     <div className="hour" data-week={week.toLowerCase()} data-hour={i+1} key={i} onClick={() => toggleModal({hour: i+1, week})}>
-                        <div title={`${i+1} ${i + 1 >= 12 ? 'PM' : 'AM'}, ${week}`}>
+                        <div className="hour-title" title={`${i+1} ${i + 1 >= 12 ? 'PM' : 'AM'}, ${week}`}>
                             {i + 1}
                             <span className="hour-period">{i + 1 >= 12 ? 'PM' : 'AM'}</span>
                         </div>
