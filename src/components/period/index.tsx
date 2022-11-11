@@ -1,17 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { modalStore } from '../../store/modal';
+import { useEffect, useRef } from 'react';
 import '../period/index.css';
 import { Global } from './global';
 import ScheduleEvent from './modal/scheduleEvent';
+import { signal } from '@preact/signals-react';
+import { signalModal } from '../../store/modal';
+
+const mount = signal(false);
+const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 export default function Period() {
-    const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    
-    const [mount, setMount] = useState(false);
     
     useEffect(() => {
-        setMount(true);
+        mount.value = true;
     }, []);
 
     if(!mount) {
@@ -69,12 +69,12 @@ function WeekEl({ id, value }: { id: number; value: string }) {
 
 function HourEl({week}: {week: string}) {
     
-    const [modal, setModal] = useRecoilState(modalStore);
+    // const [modal, setModal] = useRecoilState(modalStore);
 
     const toggleModal = (props: {week: string, hour: number}) => {
         const {hour, week} = props;
 
-        setModal({isShowing: true, title: 'Schedule event', content: <ScheduleEvent hour={hour} week={week} />});
+        signalModal.value = ({isShowing: true, title: 'Schedule event', content: <ScheduleEvent hour={hour} week={week} />});
 
     }
     

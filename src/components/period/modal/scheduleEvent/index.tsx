@@ -2,10 +2,8 @@ import './index.css';
 import {FiClock} from 'react-icons/fi';
 import {BsFillCalendarDateFill} from 'react-icons/bs';
 import React, { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { modalStore } from '../../../../store/modal';
-import { eventStore } from '../../../../store/event';
-import { EventService } from '../../../../service/event';
+import { signalModal } from '../../../../store/modal';
+import {event} from '../../../../store/event';
 
 interface InputProps {
     title: string;
@@ -31,8 +29,7 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
     };
 
     const [inputs, setInputs] = useState<InputProps>(initialState);
-    const [modal, setModal] = useRecoilState(modalStore);
-    const [event, setEvent] = useRecoilState(eventStore);
+
 
     const handleInput = (e: React.ChangeEvent) => {
         const target = e.target as HTMLInputElement;
@@ -55,7 +52,7 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
         const {title, fHour, eHour, eMinute, fMinute, status} = inputs;
 
         const newEvent = [
-            ...event, 
+            ...event.value, 
             {
                 title, 
                 status,
@@ -68,12 +65,12 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
             }
         ];
 
-        setEvent(newEvent);
+        event.value = (newEvent);
         // todo save
         // EventService.save(newEvent);
 
         // close modal
-        setTimeout(() => setModal({isShowing: false}), 200);
+        setTimeout(() => signalModal.value = {isShowing: false}, 200);
 
     }
     

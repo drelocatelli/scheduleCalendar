@@ -1,9 +1,7 @@
-import { useRecoilState } from 'recoil';
-import { eventStore } from '../../../store/event';
+import {event} from '../../../store/event';
 import './index.css';
 
 const Global = () => {
-    const [events, setEvents] = useRecoilState(eventStore);
 
     const Lines = () => {
         const allMinutesPos = Array.from(document.querySelectorAll('.minute')) as HTMLElement[];
@@ -26,13 +24,13 @@ const Global = () => {
         const allHourElement = Array.from(document.querySelectorAll('.hours .hour')) as HTMLElement[];
 
         // find the event widget element
-        const eventTime = parseInt(events[i].time.initTime).toString();
-        const endEventTime = parseInt(events[i].time.endTime).toString();
-        const hourElement = allHourElement.find((el) => el.dataset.week == events[i].time.week && el.dataset.hour == eventTime);
-        const nextHourElement = allHourElement.find((el) => el.dataset.week == events[i].time.week && el.dataset.hour == endEventTime);
+        const eventTime = parseInt(event.value[i].time.initTime).toString();
+        const endEventTime = parseInt(event.value[i].time.endTime).toString();
+        const hourElement = allHourElement.find((el) => el.dataset.week == event.value[i].time.week && el.dataset.hour == eventTime);
+        const nextHourElement = allHourElement.find((el) => el.dataset.week == event.value[i].time.week && el.dataset.hour == endEventTime);
 
-        const initMinute = parseInt(events[i].time.initTime.split(':')[1]);
-        const endMinute = parseInt(events[i].time.endTime.split(':')[1]);
+        const initMinute = parseInt(event.value[i].time.initTime.split(':')[1]);
+        const endMinute = parseInt(event.value[i].time.endTime.split(':')[1]);
         const eventMinPosition = calcPos(initMinute);
         const eventMaxPosition = calcPos(endMinute);
 
@@ -52,11 +50,11 @@ const Global = () => {
             const maxPos = maxPosEl.getBoundingClientRect().y - minPos.y;
 
             return {
-                time: events[i].time,
+                time: event.value[i].time,
                 offset,
                 minPos,
                 maxPos,
-                color: events[i].color
+                color: event.value[i].color
             };
         }
     };
@@ -64,7 +62,7 @@ const Global = () => {
     return (
         <div className="global">
             <Lines />
-            {events.map((e, i) => (
+            {event.value.map((e, i) => (
                 <div
                     key={i}
                     className="card"

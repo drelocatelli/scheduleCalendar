@@ -4,10 +4,9 @@ import Modal from "../components/modal";
 import Period from "../components/period";
 import Platform from "../components/platform";
 import { EventService } from "../service/event";
-import { eventStore } from "../store/event";
+import {event} from '../store/event';
 
 function Home() {
-    const [event, setEvent] = useRecoilState(eventStore);
 
     const [mounted, setMounted] = useState(false);
     const [loaded, setLoaded] = useState(false);
@@ -21,7 +20,7 @@ function Home() {
             const savedEvents = JSON.parse(EventService.get() ?? "\[\]");
     
             console.log(savedEvents)
-            setEvent(savedEvents);
+            event.value = (savedEvents);
     
             setLoaded(true);
 
