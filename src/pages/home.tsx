@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import Modal from "../components/modal";
 import Period from "../components/period";
 import Platform from "../components/platform";
