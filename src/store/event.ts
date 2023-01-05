@@ -8,7 +8,7 @@ export interface Event {
     color: string;
 }
 
-interface Time {
+export interface Time {
     initTime: string;
     endTime: string;
     week: string;

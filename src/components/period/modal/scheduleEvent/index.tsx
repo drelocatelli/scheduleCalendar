@@ -13,11 +13,11 @@ interface InputProps {
     eMinute: string;
     status: string;
 }
+export const hourWithZero = (num: number) => (num <= 9) ? `0${num}` : num;
 
 export default function ScheduleEvent(props: {week: string, hour: number}) {
     const {hour, week} = props;
 
-    const hourWithZero = (num: number) => (num <= 9) ? `0${num}` : num;
 
     const initialState : InputProps = {
         title: '(No title)',

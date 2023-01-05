@@ -1,20 +1,22 @@
-import {event} from '../../../store/event';
+import React from 'react';
+import { event, Time } from '../../../store/event';
+import DragEvents from './dragEvents';
 import './index.css';
+import MinPosition from './position';
 
 const Global = () => {
-
     const Lines = () => {
         const allMinutesPos = Array.from(document.querySelectorAll('.minute')) as HTMLElement[];
         let minutesPosOffset = [];
 
-        for(let minutesPos of allMinutesPos) {
+        for (let minutesPos of allMinutesPos) {
             minutesPosOffset.push(minutesPos.offsetTop);
         }
 
-        return(
+        return (
             <>
                 {minutesPosOffset.map((e, i) => (
-                    <div className="line" key={i} style={{top: e}}></div>
+                    <div className="line" key={i} style={{ top: e }}></div>
                 ))}
             </>
         );
@@ -41,7 +43,7 @@ const Global = () => {
         const maxPosEl = minutesEndPosElements?.find((el) => el.dataset.position == eventMaxPosition);
 
         function calcPos(min: number) {
-            return min <= 11.8 ? 'start' : min <= 27.6 ? 'middle-start' : min <= 41.4 ? 'middle' : min <= 55.2 ? 'middle-end' : 'end';
+            return min <= MinPosition.start ? 'start' : min <= MinPosition['middle-start'] ? 'middle-start' : min <= MinPosition.middle ? 'middle' : min <= MinPosition['middle-end'] ? 'middle-end' : 'end';
         }
 
         if (minPosEl && maxPosEl) {
@@ -54,19 +56,41 @@ const Global = () => {
                 offset,
                 minPos,
                 maxPos,
-                color: event.value[i].color
+                color: event.value[i].color,
             };
         }
     };
 
+    const hourDiff = (time: Time) => {
+        console.log(time);
+        let initHour = parseInt(time.initTime.split(':')[0]);
+        let endHour = parseInt(time.endTime.split(':')[0]);
+        const diff = endHour - initHour;
+
+        return diff;
+    };
+
+    const minDiff = (time: Time) => {
+        console.log(time);
+        let initMin = parseInt(time.initTime.split(':')[1]);
+        let endMin = parseInt(time.endTime.split(':')[1]);
+        const diff = endMin - initMin;
+        
+        return diff;
+    };
+
     return (
-        <div className="global">
+        <div className="global" onDrop={DragEvents.over} onDragEnd={DragEvents.end} onDragOver={DragEvents.over}>
             <Lines />
             {event.value.map((e, i) => (
                 <div
                     key={i}
                     className="card"
-                    title={`${e.time.initTime} - ${e.time.endTime}`}
+                    title={`${e.time.initTime} - ${e.time.endTime}, ${e.time.week}`}
+                    data-hourDiff={hourDiff(e.time)}
+                    data-minDiff={minDiff(e.time)}
+                    draggable={true}
+                    onDragStart={DragEvents.start}
                     style={{
                         top: eventProp(i)?.offset,
                         left: eventProp(i)?.minPos.left,
@@ -76,7 +100,7 @@ const Global = () => {
                     }}>
                     {e.title}
                 </div>
-            )) }
+            ))}
         </div>
     );
 };
