@@ -1,5 +1,3 @@
-import { atom } from "recoil";
-
 export interface Event {
     title: string;
     description?: string;
@@ -13,10 +11,3 @@ interface Time {
     endTime: string;
     week: string;
 }
-
-const eventStore = atom<Event[]>({
-    key: 'eventStore',
-    default: []
-});
-
-export {eventStore};
