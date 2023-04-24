@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import Modal from "../components/modal";
 import Period from "../components/period";
 import Platform from "../components/platform";
-import { EventService } from "../service/event";
-import {event} from '../store/event';
 
 function Home() {
 
@@ -16,11 +14,6 @@ function Home() {
 
     useEffect(() => {
         if(mounted) {
-            const savedEvents = JSON.parse(EventService.get() ?? "\[\]");
-    
-            console.log(savedEvents)
-            event.value = (savedEvents);
-    
             setLoaded(true);
 
         }

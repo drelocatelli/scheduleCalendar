@@ -3,7 +3,6 @@ import {RiCloseFill} from 'react-icons/ri';
 import { signalModal } from "../../store/modal";
 
 export default function Modal() {
-    // const [modal, setModal] = useRecoilState(modalStore);
 
     const closeModal = () => {
         signalModal.value = ({isShowing: false, title: undefined, content: undefined});

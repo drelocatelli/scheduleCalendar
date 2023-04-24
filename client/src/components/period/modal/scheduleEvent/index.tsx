@@ -30,7 +30,6 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
 
     const [inputs, setInputs] = useState<InputProps>(initialState);
 
-
     const handleInput = (e: React.ChangeEvent) => {
         const target = e.target as HTMLInputElement;
         const value = target.value;
