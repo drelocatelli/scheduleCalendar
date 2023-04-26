@@ -2,23 +2,19 @@ import { useEffect, useState } from "react";
 import Modal from "../components/modal";
 import Period from "../components/period";
 import Platform from "../components/platform";
+import { EventService } from "../service/event";
 
 function Home() {
 
-    const [mounted, setMounted] = useState(false);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
-    })
+        load();
+    }, [])
 
-    useEffect(() => {
-        if(mounted) {
-            setLoaded(true);
-
-        }
-        
-    }, [mounted]);
+    const load = async() => {
+        await EventService.index();
+    };
     
     return loaded ? (
         <Platform>
@@ -26,7 +22,9 @@ function Home() {
             <Period />
         </Platform>
     ) : (
-        <>Loading...</>
+        <div style={{display: "flex", height: "100vh", alignItems: "center", justifyContent: "center", fontSize: "30px"}}>
+            Loading, please wait...
+        </div>
     );
 }
 
