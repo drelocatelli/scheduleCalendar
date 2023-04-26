@@ -6,7 +6,7 @@ export interface Event {
     description?: string;
     status: string;
     time: Time;
-    color: string;
+    color?: string;
 }
 
 export interface Time {

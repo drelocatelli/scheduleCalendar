@@ -1,9 +1,11 @@
 import './index.css';
-import {FiClock} from 'react-icons/fi';
-import {BsFillCalendarDateFill} from 'react-icons/bs';
+import { FiClock } from 'react-icons/fi';
+import { BsFillCalendarDateFill } from 'react-icons/bs';
 import React, { useState } from 'react';
 import { signalModal } from '../../../../store/modal';
-import {event} from '../../../../store/event';
+import { event } from '../../../../store/event';
+import pulseSVG from '../../../loading/pulse.svg';
+import { EventService } from '../../../../service/event';
 
 interface InputProps {
     title: string;
@@ -13,19 +15,19 @@ interface InputProps {
     eMinute: string;
     status: string;
 }
-export const hourWithZero = (num: number) => (num <= 9) ? `0${num}` : num;
+export const hourWithZero = (num: number) => (num <= 9 ? `0${num}` : num);
 
-export default function ScheduleEvent(props: {week: string, hour: number}) {
-    const {hour, week} = props;
+export default function ScheduleEvent(props: { week: string; hour: number }) {
+    const [isLoading, setLoading] = useState<boolean>(false);
+    const { hour, week } = props;
 
-
-    const initialState : InputProps = {
+    const initialState: InputProps = {
         title: '(No title)',
-        fHour: hourWithZero(hour).toString(), 
+        fHour: hourWithZero(hour).toString(),
         fMinute: '00',
-        eHour: hourWithZero(hour+1).toString(),
+        eHour: hourWithZero(hour + 1).toString(),
         eMinute: '00',
-        status: 'free'
+        status: 'free',
     };
 
     const [inputs, setInputs] = useState<InputProps>(initialState);
@@ -34,50 +36,49 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
         const target = e.target as HTMLInputElement;
         const value = target.value;
         const name = target.name;
-        setInputs(state => ({...state, [name]: value}) );
-    }
+        setInputs((state) => ({ ...state, [name]: value }));
+    };
 
     const selectTarget = (e: React.MouseEvent<HTMLInputElement>) => {
         const element = e.target as HTMLInputElement;
         element.select();
-    }
+    };
 
-    const onSubmit = (e: React.FormEvent) => {
+    const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        const colors = ['#009688', '#8BC34A', '#00BCD4', '#E91E63', '#FF5722', '#673AB7'];
-        const chooseColor = Math.floor(Math.random() * ((colors.length - 1) - 0) + 0);
-        
-        const {title, fHour, eHour, eMinute, fMinute, status} = inputs;
+        setLoading(true);
 
-        const newEvent = [
-            ...event.value, 
-            {
-                title, 
-                status,
-                color: colors[chooseColor],
-                time: {
-                    initTime: `${fHour}:${fMinute}`,
-                    endTime: `${eHour}:${eMinute}`,
-                    week: week.toLowerCase(),
-                },
-            }
-        ];
+        const { title, fHour, eHour, eMinute, fMinute, status } = inputs;
 
-        event.value = (newEvent as any);
-        // todo save
-        // EventService.save(newEvent);
+        const newEvent = {
+            description: title,
+            busy: status == 'busy',
+            start_time: `${fHour}:${fMinute}`,
+            end_time: `${eHour}:${eMinute}`,
+            week: week.toLowerCase(),
+        };
+
+        await EventService.save(newEvent as any);
 
         // close modal
-        setTimeout(() => signalModal.value = {isShowing: false}, 200);
+        setTimeout(() => (signalModal.value = { isShowing: false }), 200);
 
-        console.log(event.value)
-    }
-    
-    return(
-        <div className='schedule-event'>
+        console.log(event.value);
+    };
+
+    return (
+        <div className="schedule-event">
             <form onSubmit={onSubmit}>
-                <input type="text" name="title" onChange={handleInput} className='spacing' style={{width: '-webkit-fill-available'}} placeholder="Add title" autoFocus />
+                <input
+                    type="text"
+                    name="title"
+                    onChange={handleInput}
+                    className="spacing"
+                    style={{ width: '-webkit-fill-available' }}
+                    placeholder="Add title"
+                    autoFocus
+                />
                 <div className="time-schedule basic-spacing">
                     <div className="timer icon">
                         <FiClock size={20} />
@@ -85,28 +86,59 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
                     <div>
                         {week}, &nbsp;
                         {hourWithZero(hour)}:
-                        <input type="number" name="fMinute" value={inputs.fMinute} onChange={handleInput} onClick={selectTarget} min="0" max="59" style={{fontSize: 'inherit', width: '25px'}} /> 
+                        <input
+                            type="number"
+                            name="fMinute"
+                            value={inputs.fMinute}
+                            onChange={handleInput}
+                            onClick={selectTarget}
+                            min="0"
+                            max="59"
+                            style={{ fontSize: 'inherit', width: '25px' }}
+                        />
                         {hour >= 12 ? 'PM' : 'AM'}
-                        &nbsp;&nbsp; - &nbsp;&nbsp; 
-                        <input type="number" name="eHour" value={inputs.eHour} onChange={handleInput} onClick={selectTarget} min="0" max="24" style={{fontSize: 'inherit', width: '25px'}} />
+                        &nbsp;&nbsp; - &nbsp;&nbsp;
+                        <input
+                            type="number"
+                            name="eHour"
+                            value={inputs.eHour}
+                            onChange={handleInput}
+                            onClick={selectTarget}
+                            min="0"
+                            max="24"
+                            style={{ fontSize: 'inherit', width: '25px' }}
+                        />
                         :
-                        <input type="number" name="eMinute" value={inputs.eMinute} onChange={handleInput} onClick={selectTarget} min="0" max="59" style={{fontSize: 'inherit', width: '25px'}} />
+                        <input
+                            type="number"
+                            name="eMinute"
+                            value={inputs.eMinute}
+                            onChange={handleInput}
+                            onClick={selectTarget}
+                            min="0"
+                            max="59"
+                            style={{ fontSize: 'inherit', width: '25px' }}
+                        />
                     </div>
                 </div>
                 <div className="busy-schedule basic-spacing">
-                    <div style={{display: 'flex', flexDirection: 'row'}}>
-                        <div className='icon'>
+                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                        <div className="icon">
                             <BsFillCalendarDateFill size={20} />
                         </div>
                         <div>
-                            <select name="status" onChange={handleInput} style={{fontSize: 'inherit'}}>
+                            <select name="status" onChange={handleInput} style={{ fontSize: 'inherit' }}>
                                 <option value="busy">Busy</option>
-                                <option value="free" selected>Free</option>
+                                <option value="free" selected>
+                                    Free
+                                </option>
                             </select>
                         </div>
                     </div>
-                    <div className='controls'>
-                        <button type='submit'>Save</button>
+                    <div className="controls">
+                        <button type="submit" style={{ boxSizing: 'border-box' }}>
+                            {isLoading ? <img src={pulseSVG} width={'50px'} /> : 'Save'}
+                        </button>
                     </div>
                 </div>
             </form>

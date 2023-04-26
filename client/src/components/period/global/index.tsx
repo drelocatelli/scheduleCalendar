@@ -94,8 +94,21 @@ const Global = () => {
                         background: eventProp(i)?.color,
                         width: `${eventProp(i)?.minPos.width}px`,
                         height: `${eventProp(i)?.maxPos}px`,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                     }}>
-                    {e.title}
+                        <div>
+                            {e.title}
+
+                        </div>
+
+                        <div>
+                            {e.status == 'busy' && (
+                                <>busy</>
+                            )}
+                        </div>
+                    
                 </div>
             ))}
         </div>

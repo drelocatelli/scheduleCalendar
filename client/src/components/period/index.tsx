@@ -4,7 +4,6 @@ import { Global } from './global';
 import { signal } from '@preact/signals-react';
 import WeekEl from './week';
 import { EventService } from "../../service/event";
-import { event } from "../../store/event";
 
 const mount = signal(false);
 const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -16,9 +15,7 @@ export default function Period() {
     }, []);
 
     const load = async() => {
-        let events = await EventService.index();
-        event.value = events as any;
-        console.log(event.value)
+        await EventService.index();
         setTimeout(() => {
             mount.value = true;
         }, 1000);
