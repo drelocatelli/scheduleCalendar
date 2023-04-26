@@ -2,19 +2,15 @@ import { useEffect, useState } from "react";
 import Modal from "../components/modal";
 import Period from "../components/period";
 import Platform from "../components/platform";
-import { EventService } from "../service/event";
+
 
 function Home() {
 
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        load();
-    }, [])
-
-    const load = async() => {
-        await EventService.index();
-    };
+        setLoaded(true);
+    }, []);
     
     return loaded ? (
         <Platform>

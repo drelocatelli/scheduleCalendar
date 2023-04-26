@@ -64,13 +64,14 @@ export default function ScheduleEvent(props: {week: string, hour: number}) {
             }
         ];
 
-        event.value = (newEvent);
+        event.value = (newEvent as any);
         // todo save
         // EventService.save(newEvent);
 
         // close modal
         setTimeout(() => signalModal.value = {isShowing: false}, 200);
 
+        console.log(event.value)
     }
     
     return(

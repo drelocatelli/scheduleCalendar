@@ -1,4 +1,5 @@
 import { Event } from "../store/event";
+import { EventsMap } from "./event.types";
 import service from "./instance";
 
 class EventService {
@@ -7,14 +8,15 @@ class EventService {
         
     }
 
-    static async index() {
+    static async index() : Promise<any[] | undefined> {
        try {
             const response = await service.get('/schedule');
 
-            console.log(response);
+            return EventsMap(response.data.response);
 
        } catch(err: any) {
             console.log(err);
+            return undefined;
        }
     }
 

@@ -1,6 +1,7 @@
 import { signal } from "@preact/signals-react";
 
 export interface Event {
+    id: string,
     title: string;
     description?: string;
     status: string;

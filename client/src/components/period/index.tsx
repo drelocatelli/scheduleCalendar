@@ -3,6 +3,8 @@ import '../period/index.css';
 import { Global } from './global';
 import { signal } from '@preact/signals-react';
 import WeekEl from './week';
+import { EventService } from "../../service/event";
+import { event } from "../../store/event";
 
 const mount = signal(false);
 const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -10,8 +12,17 @@ const week = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 export default function Period() {
     
     useEffect(() => {
-        mount.value = true;
+        load();
     }, []);
+
+    const load = async() => {
+        let events = await EventService.index();
+        event.value = events as any;
+        console.log(event.value)
+        setTimeout(() => {
+            mount.value = true;
+        }, 1000);
+    };
 
     if(!mount) {
         return(

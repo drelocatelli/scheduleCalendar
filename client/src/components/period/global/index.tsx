@@ -1,4 +1,3 @@
-import React from 'react';
 import { event, Time } from '../../../store/event';
 import DragEvents from './dragEvents';
 import './index.css';
@@ -62,7 +61,6 @@ const Global = () => {
     };
 
     const hourDiff = (time: Time) => {
-        console.log(time);
         let initHour = parseInt(time.initTime.split(':')[0]);
         let endHour = parseInt(time.endTime.split(':')[0]);
         const diff = endHour - initHour;
@@ -71,7 +69,6 @@ const Global = () => {
     };
 
     const minDiff = (time: Time) => {
-        console.log(time);
         let initMin = parseInt(time.initTime.split(':')[1]);
         let endMin = parseInt(time.endTime.split(':')[1]);
         const diff = endMin - initMin;
@@ -87,8 +84,8 @@ const Global = () => {
                     key={i}
                     className="card"
                     title={`${e.time.initTime} - ${e.time.endTime}, ${e.time.week}`}
-                    data-hourDiff={hourDiff(e.time)}
-                    data-minDiff={minDiff(e.time)}
+                    data-hourdiff={hourDiff(e.time)}
+                    data-mindiff={minDiff(e.time)}
                     draggable={true}
                     onDragStart={DragEvents.start}
                     style={{
