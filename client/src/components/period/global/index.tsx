@@ -1,7 +1,10 @@
+import { MouseEvent } from 'react';
 import { event, Time } from '../../../store/event';
 import DragEvents from './dragEvents';
 import './index.css';
 import MinPosition from './position';
+import { signalModal } from '../../../store/modal';
+import ScheduleEvent from '../modal/scheduleEvent';
 
 const Global = () => {
     const Lines = () => {
@@ -76,6 +79,19 @@ const Global = () => {
         return diff;
     };
 
+    const updateEvent = (e: MouseEvent) => {
+        const target = e.target as HTMLDivElement;
+        const props = {
+            title: target.dataset.description,
+            hour: parseInt(target.dataset.hour!.split(':')[0]),
+            minute: target.dataset.hour!.split(':')[1],
+            endHour: target.dataset['endHour'],
+            week: target.dataset!.week,
+            status: target.dataset.status,
+        }
+        signalModal.value = ({isShowing: true, title: 'Schedule event', content: <ScheduleEvent id={target.id} object={props} hour={props.hour} week={props.week!} />});
+    };
+
     return (
         <div className="global" onDrop={DragEvents.over} onDragEnd={DragEvents.end} onDragOver={DragEvents.over}>
             <Lines />
@@ -83,7 +99,14 @@ const Global = () => {
                 <div
                     key={i}
                     className="card"
+                    id={e?.id}
+                    data-description={e.title}
+                    data-hour={e.time.initTime}
+                    data-status={e.status}
+                    data-end-hour={e.time.endTime}
+                    data-week={e.time.week}
                     title={`${e.time.initTime} - ${e.time.endTime}, ${e.time.week}`}
+                    onClick={updateEvent}
                     data-hourdiff={hourDiff(e.time)}
                     data-mindiff={minDiff(e.time)}
                     draggable={true}

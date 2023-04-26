@@ -17,11 +17,18 @@ interface InputProps {
 }
 export const hourWithZero = (num: number) => (num <= 9 ? `0${num}` : num);
 
-export default function ScheduleEvent(props: { week: string; hour: number }) {
+export default function ScheduleEvent(props: { week: string; hour: number, id?: string, object?: any }) {
     const [isLoading, setLoading] = useState<boolean>(false);
     const { hour, week } = props;
 
-    const initialState: InputProps = {
+    const initialState: InputProps = props.id ? {
+        title: props.object?.description ?? '(No title)',
+        fHour: hourWithZero(props.object.hour).toString(),
+        fMinute: props.object.minute,
+        eHour: props.object.endHour!.split(':')[0],
+        eMinute:  props.object.endHour!.split(':')[1],
+        status: props.object.status
+    } : {
         title: '(No title)',
         fHour: hourWithZero(hour).toString(),
         fMinute: '00',
@@ -44,6 +51,13 @@ export default function ScheduleEvent(props: { week: string; hour: number }) {
         element.select();
     };
 
+    const deleteEvent = async () => {
+        if(props.id) {
+            await EventService.delete(props.id);
+            await EventService.index();
+        }
+    };
+
     const onSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -59,7 +73,12 @@ export default function ScheduleEvent(props: { week: string; hour: number }) {
             week: week.toLowerCase(),
         };
 
-        await EventService.save(newEvent as any);
+        if(props.id) {
+            await EventService.update(props.id, newEvent as any);
+        } else {
+            await EventService.save(newEvent as any);
+        }
+
 
         // close modal
         setTimeout(() => (signalModal.value = { isShowing: false }), 200);
@@ -73,6 +92,7 @@ export default function ScheduleEvent(props: { week: string; hour: number }) {
                 <input
                     type="text"
                     name="title"
+                    defaultValue={props.id ? inputs.title : ''}
                     onChange={handleInput}
                     className="spacing"
                     style={{ width: '-webkit-fill-available' }}
@@ -136,8 +156,12 @@ export default function ScheduleEvent(props: { week: string; hour: number }) {
                         </div>
                     </div>
                     <div className="controls">
+                        {props.id && (
+                            <button type='button' onClick={deleteEvent}>Delete</button>
+                        )}
+                        &nbsp;
                         <button type="submit" style={{ boxSizing: 'border-box' }}>
-                            {isLoading ? <img src={pulseSVG} width={'50px'} /> : 'Save'}
+                            {isLoading ? <img src={pulseSVG} width={'50px'} /> : props.id ? 'Update' : 'Save'}
                         </button>
                     </div>
                 </div>
