@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import ScheduleRoutes from './routes/schedule';
 import 'dotenv/config';
 
 const app = express();
@@ -10,4 +11,8 @@ app.get('/', (req: Request, res: Response) => {
     res.send('welcome to the jungle');
 });
 
-app.listen(process.env.API_PORT);
+app.use('/schedule', ScheduleRoutes)
+
+app.listen(process.env.API_PORT, () => {
+    console.log(`Server running at ${process.env.API_PORT}`)
+});
